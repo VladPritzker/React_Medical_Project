@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../UserModal/UserModal.css';
 
 const UserModal = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -49,6 +50,17 @@ const UserModal = () => {
     }
   };
 
+  const handleLogout = () => {
+    // Clear cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    // Redirect to the registration page
+    navigate('/registration');
+  };
+
   if (!userData) {
     return <div>Loading...</div>;
   }
@@ -66,6 +78,7 @@ const UserModal = () => {
         )}
         <input type="file" onChange={handleAvatarChange} />
         <button onClick={handleAvatarUpload}>Upload Avatar</button>
+        <button onClick={handleLogout} className="logout-button">Logout</button>
       </div>
     </div>
   );
