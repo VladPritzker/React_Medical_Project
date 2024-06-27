@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import '../UserModal/UserModal.css';
+import '../../components/UserModal/UserModal.css';
 
 const UserModal = () => {
   const { userId } = useParams();
@@ -29,10 +29,14 @@ const UserModal = () => {
   }
 
   return (
-    <div className="user-modal">
-      <h2>User Details</h2>
-      <p><strong>Username:</strong> {userData.username}</p>
-      <p><strong>Email:</strong> {userData.email}</p>
+    <div className="user-card">
+      <div className="user-card-header">
+        <h2>User Details</h2>
+      </div>
+      <div className="user-card-body">
+        <p><strong>Username:</strong> {userData.username}</p>
+        <p><strong>Email:</strong> {userData.email}</p>
+      </div>
     </div>
   );
 };
