@@ -64,6 +64,7 @@ const UserModal = () => {
   if (!userData) {
     return <div>Loading...</div>;
   }
+  
 
   return (
     <div className="user-card">
