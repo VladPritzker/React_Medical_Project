@@ -1,11 +1,31 @@
+.user-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.user-container {
+  display: flex;
+  flex-direction: row; /* Change from column to row to align items horizontally */
+  align-items: flex-start; /* Align items to the top */
+  gap: 20px;
+  width: 100%;
+}
+
 .user-card {
   background: #ffffff; /* White background */
   padding: 20px;
   border-radius: 10px; /* Rounded corners */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  position: relative;
   width: 300px; /* Fixed width for the card */
   font-family: 'Arial', sans-serif; /* Modern font */
+  margin-right: auto; /* Align the card to the left */
 }
+
 
 .user-card-header {
   border-bottom: 1px solid #eee;
@@ -34,7 +54,7 @@ input[type="file"] {
   border: 1px solid #ddd;
   padding: 5px;
   border-radius: 5px;
-}
+} 
 
 button {
   background-color: #007bff; /* Primary button color */
@@ -54,7 +74,46 @@ button:hover {
   background-color: #f44336;
   margin-top: 10px;
 }
-
+ 
 .logout-button:hover {
   background-color: #d32f2f;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.appointments-modal, .userhistory-modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
