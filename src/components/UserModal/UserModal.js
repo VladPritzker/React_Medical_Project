@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../UserModal/UserModal.css';
+import './UserModal.css';
 
 const UserModal = () => {
   const { userId } = useParams();
@@ -51,13 +51,11 @@ const UserModal = () => {
   };
 
   const handleLogout = () => {
-    // Clear cookies
     document.cookie.split(";").forEach((c) => {
       document.cookie = c
         .replace(/^ +/, "")
         .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
-    // Redirect to the registration page
     navigate('/registration');
   };
 
@@ -65,28 +63,24 @@ const UserModal = () => {
     return <div>Loading...</div>;
   }
 
- 
   return (
     <div className="user-card">
+      <button onClick={handleLogout} className="logout-button">Logout</button>
       <div className="user-card-header">
         <h2>User Details</h2>
       </div>
       <div className="user-card-body">
-        <p><strong>Username:</strong> {userData.username}</p>
-        <p><strong>Email:</strong> {userData.email}</p>
-        {userData.avatar && (
-          <img src={`http://localhost:8001${userData.avatar}`} alt="User Avatar" className="avatar" />
-        )}
-        <input type="file" onChange={handleAvatarChange} />
-        <button onClick={handleAvatarUpload}>Upload Avatar</button>
-        <button onClick={handleLogout} className="logout-button">Logout</button>
+        <img src={`http://localhost:8001${userData.avatar}`} alt="User Avatar" className="avatar" />
+        <div className="user-info">
+          <p><strong>Username:</strong> {userData.username}</p>
+          <p><strong>Email:</strong> {userData.email}</p>
+          <input type="file" onChange={handleAvatarChange} />
+          <button onClick={handleAvatarUpload}>Upload Avatar</button>
+          
+        </div>
       </div>
     </div>
   );
 };
 
-  
- 
-
 export default UserModal;
-   
