@@ -97,7 +97,7 @@ button:hover {
   align-items: center;
   z-index: 1000;
 }
-
+ 
 .appointments-modal, .userhistory-modal {
   background: #fff;
   padding: 20px;
