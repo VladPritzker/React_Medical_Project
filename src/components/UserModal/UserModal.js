@@ -1,127 +1,63 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Appointments from '../Appointments/Appointments';
-import UserHistory from '../UserHistory/UserHistory';
-import './UserModal.css'; // Corrected path
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import './UserModal.css';
 
-const UserPage = () => {
+const UserModal = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
-  const [avatar, setAvatar] = useState(null);
-  const [isAppointmentsModalOpen, setAppointmentsModalOpen] = useState(false);
-  const [isUserHistoryModalOpen, setUserHistoryModalOpen] = useState(false);
-  const [isUserModalOpen, setUserModalOpen] = useState(true); // Set to true to open modal by default
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:8001/users/${userId}`);
-        const data = await response.json();
+        const response = await fetch(`http://localhost:8001/users/${userId}/`);
         if (response.ok) {
+          const data = await response.json();
           setUserData(data);
         } else {
-          console.error('Error:', data);
+          console.error('Failed to fetch user data');
         }
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching user data:', error);
       }
     };
 
     fetchUserData();
   }, [userId]);
 
-  const handleAvatarChange = (e) => {
-    setAvatar(e.target.files[0]);
-  };
-
-  const handleAvatarUpload = async () => {
-    const formData = new FormData();
-    formData.append('avatar', avatar);
-
-    try {
-      const response = await fetch(`http://localhost:8001/users/${userId}/avatar/`, {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setUserData((prevData) => ({ ...prevData, avatar: data.avatar }));
-      } else {
-        console.error('Error:', data);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
   const handleLogout = () => {
-    document.cookie.split(";").forEach((c) => {
-      document.cookie = c
-        .replace(/^ +/, "")
-        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
+    // Handle logout logic here
+    console.log('Logging out...');
     navigate('/registration');
   };
 
-  const openAppointmentsModal = () => setAppointmentsModalOpen(true);
-  const closeAppointmentsModal = () => setAppointmentsModalOpen(false);
-
-  const openUserHistoryModal = () => setUserHistoryModalOpen(true);
-  const closeUserHistoryModal = () => setUserHistoryModalOpen(false);
-
-  const closeUserModal = () => setUserModalOpen(false);
-
-  if (!userData) {
-    return <div>Loading...</div>;
-  }
+  if (!userData) return null;
 
   return (
-    <div className="user-page">
-      {isUserModalOpen && (
-        <div className="user-modal">
-          <div className="user-card">
-          <button onClick={handleLogout} className="logout-button">Logout</button>
-            <div className="user-card-header">
-              <h2>User Details</h2>
-            </div>                                      
-            <div className="user-card-body">
-              <img src={`http://localhost:8001${userData.avatar}`} alt="User Avatar" className="avatar" />
-              <div className="user-info">
-                <p><strong>Username:</strong> {userData.username}</p>
-                <p><strong>Email:</strong> {userData.email}</p>
-                <input type="file" onChange={handleAvatarChange} />
-                <button onClick={handleAvatarUpload}>Upload Avatar</button>
-              </div>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="user-card">
+          <button className="close-button" onClick={() => navigate('/registration')}>X</button>
+          <div className="user-modal-header">
+            <h2>{userData.username}'s Profile</h2>
+          </div>
+          <div className="user-modal-body">
+            <div className="profile-section">
+              <h3>Profile Photo</h3>
+              <img src="default-profile.jpg" alt="Profile" className="profile-photo"/>
+              <button className="upload-button">Upload Photo</button>
             </div>
-            <div className="buttons-container">
-              <button onClick={openAppointmentsModal}>Appointments</button>
-              <button onClick={openUserHistoryModal}>User History</button>
+            <div className="user-info">
+              <p><strong>Email:</strong> {userData.email}</p>
             </div>
+            <button className="modal-button" onClick={handleLogout}>Log Out</button>
+            <button className="modal-button">Appointment</button>
+            <button className="modal-button">User History</button>
           </div>
         </div>
-      )}
-
-      {isAppointmentsModalOpen && (
-        <div className="modal-overlay">
-          <div className="appointments-modal">
-            <i className="fas fa-times modal-close" onClick={closeAppointmentsModal}></i>
-            <Appointments userId={userId} />
-          </div>
-        </div>
-      )}
-
-      {isUserHistoryModalOpen && (
-        <div className="modal-overlay">
-          <div className="userhistory-modal">
-            <i className="fas fa-times modal-close" onClick={closeUserHistoryModal}></i>
-            <UserHistory userId={userId} />
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default UserPage;
+export default UserModal;
