@@ -1,6 +1,6 @@
 .user-page {
   position: relative;
-  display: flex;
+  display: contents;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -9,30 +9,26 @@
 
 .user-container {
   display: flex;
-  flex-direction: row; /* Change from column to row to align items horizontally */
-  align-items: flex-start; /* Align items to the top */
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
   width: 100%;
 }
 
 .user-card {
-  background: #ffffff; /* White background */
+  background: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
   padding: 20px;
-  border-radius: 10px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  position: relative;
-  width: 300px; /* Fixed width for the card */
-  font-family: 'Arial', sans-serif; /* Modern font */
-  margin-right: auto; /* Align the card to the left */
-  margin-top: -600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  font-family: 'Arial', sans-serif;
 }
-
 
 .user-card-header {
   border-bottom: 1px solid #eee;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  color: #007bff; /* Primary color */
+  color: #007bff;
   font-size: 1.5em;
 }
 
@@ -46,76 +42,98 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-top: 10px;
-  align-self: center; /* Center the avatar */
-  object-fit: cover; /* Ensure the avatar is cropped correctly */
+  align-self: center;
+  object-fit: cover;
 }
 
 input[type="file"] {
   border: 1px solid #ddd;
   padding: 5px;
   border-radius: 5px;
-} 
+  width: 96%;
+  margin-bottom: 10px;
+}
 
 button {
-  background-color: #007bff; /* Primary button color */
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3; /* Darker shade for hover */
+  background-color: #0056b3;
 }
 
 .logout-button {
   background-color: #f44336;
-  margin-top: 10px;
 }
- 
+
 .logout-button:hover {
   background-color: #d32f2f;
 }
 
-.buttons-container {
+.modal-buttons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   display: flex;
-  flex-direction: row;
   gap: 10px;
-  margin-top: -600px;
-}
- 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
- 
-.appointments-modal, .userhistory-modal {
-  background: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .modal-close {
   background: none;
   border: none;
   font-size: 1.5em;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 100px; /* Add space around the modal */
+  left: 100px; /* Add space around the modal */
+  right: 100px; /* Add space around the modal */
+  bottom: 100px; /* Add space around the modal */
+  background: rgba(224, 224, 224, 0.9); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-modal {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 1100px;
+  height: 90%; /* Set the height to 90% of the page */
+  max-height: 90%; /* Ensure the height doesn't exceed 90% of the page */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  margin-top: 10px;
+}
+
+.buttons-container {
+  display: flex;
+  flex-direction: row; /* Align butusertons in a row */
+  gap: 10px;
+  justify-content: flex-end; /* Align buttons to the right */
   position: absolute;
   top: 10px;
   right: 10px;
-  cursor: pointer;
+}
+
+.appointments-modal {
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%; /* Make the modal take the full width of the overlay */
+  height: 100%; /* Make the modal take the full height of the overlay */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: auto; /* Add scroll if content overflows */
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Appointments from '../Appointments/Appointments';
 import UserHistory from '../UserHistory/UserHistory';
-import '../UserModal/UserModal.css'
+import './UserModal.css'; // Corrected path
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const UserPage = () => {
@@ -11,6 +11,7 @@ const UserPage = () => {
   const [avatar, setAvatar] = useState(null);
   const [isAppointmentsModalOpen, setAppointmentsModalOpen] = useState(false);
   const [isUserHistoryModalOpen, setUserHistoryModalOpen] = useState(false);
+  const [isUserModalOpen, setUserModalOpen] = useState(true); // Set to true to open modal by default
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,33 +71,37 @@ const UserPage = () => {
   const openUserHistoryModal = () => setUserHistoryModalOpen(true);
   const closeUserHistoryModal = () => setUserHistoryModalOpen(false);
 
+  const closeUserModal = () => setUserModalOpen(false);
+
   if (!userData) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="user-page">
-      <div className="user-container">
-        <div className="user-card">
+      {isUserModalOpen && (
+        <div className="user-modal">
+          <div className="user-card">
           <button onClick={handleLogout} className="logout-button">Logout</button>
-          <div className="user-card-header">
-            <h2>User Details</h2>
-          </div>
-          <div className="user-card-body">
-            <img src={`http://localhost:8001${userData.avatar}`} alt="User Avatar" className="avatar" />
-            <div className="user-info">
-              <p><strong>Username:</strong> {userData.username}</p>
-              <p><strong>Email:</strong> {userData.email}</p>
-              <input type="file" onChange={handleAvatarChange} />
-              <button onClick={handleAvatarUpload}>Upload Avatar</button>
+            <div className="user-card-header">
+              <h2>User Details</h2>
+            </div>                                      
+            <div className="user-card-body">
+              <img src={`http://localhost:8001${userData.avatar}`} alt="User Avatar" className="avatar" />
+              <div className="user-info">
+                <p><strong>Username:</strong> {userData.username}</p>
+                <p><strong>Email:</strong> {userData.email}</p>
+                <input type="file" onChange={handleAvatarChange} />
+                <button onClick={handleAvatarUpload}>Upload Avatar</button>
+              </div>
+            </div>
+            <div className="buttons-container">
+              <button onClick={openAppointmentsModal}>Appointments</button>
+              <button onClick={openUserHistoryModal}>User History</button>
             </div>
           </div>
         </div>
-        <div className="buttons-container">
-          <button onClick={openAppointmentsModal}>Appointments</button>
-          <button onClick={openUserHistoryModal}>User History</button>
-        </div>
-      </div>
+      )}
 
       {isAppointmentsModalOpen && (
         <div className="modal-overlay">
