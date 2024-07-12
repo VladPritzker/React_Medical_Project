@@ -24,6 +24,7 @@
   width: 300px; /* Fixed width for the card */
   font-family: 'Arial', sans-serif; /* Modern font */
   margin-right: auto; /* Align the card to the left */
+  margin-top: -600px;
 }
 
 
@@ -83,6 +84,7 @@ button:hover {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  margin-top: -600px;
 }
  
 .modal-overlay {
