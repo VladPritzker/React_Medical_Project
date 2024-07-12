@@ -36,8 +36,7 @@ const UserModal = () => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <div className="user-card">
-          <button className="close-button" onClick={() => navigate('/registration')}>X</button>
+        <div className="user-card">          
           <div className="user-modal-header">
             <h2>{userData.username}'s Profile</h2>
           </div>
