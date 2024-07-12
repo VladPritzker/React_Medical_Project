@@ -4,9 +4,12 @@
   font-family: 'Arial', sans-serif;
   background: #f5f7fa; /* Light background color */
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); Subtle shadow */
   margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+
 }
+
 
 .appointments-container h2 {
   margin-bottom: 20px;
@@ -338,4 +341,20 @@
 .appointment-modal form button[type="button"]:hover {
   background-color: #5a6268;
   transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.delete-appointment-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.delete-appointment-button:hover {
+  background-color: #ff1a1a;
+  transform: scale(1.05);
 }

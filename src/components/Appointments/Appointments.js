@@ -28,6 +28,22 @@ function Appointments({ userId }) {
     handleCloseModal();
   };
 
+  const handleDeleteAppointment = async (appointmentId) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8001/appointments/${userId}/${appointmentId}/`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setAppointments(appointments.filter(appointment => appointment.id !== appointmentId));
+      } else {
+        console.error('Failed to delete appointment');
+      }
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
+    }
+  };
+
   return (
     <div className="appointments-container">
       <h2>Appointments</h2>
@@ -35,7 +51,10 @@ function Appointments({ userId }) {
       <ul>
         {appointments.map((appointment, index) => (
           <li key={index}>
-            {appointment.doctor} - {appointment.appointment_date}
+            {appointment.doctor} - {appointment.appointment_date} - {appointment.notes}
+            <button onClick={() => handleDeleteAppointment(appointment.id)} className="delete-appointment-button">
+              Delete
+            </button>
           </li>
         ))}
       </ul>

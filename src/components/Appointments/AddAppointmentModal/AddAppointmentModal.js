@@ -42,10 +42,13 @@ function AddAppointmentModal({ userId, isOpen, onClose, onSave }) {
     <Modal
       isOpen={isOpen}
       onRequestClose={onClose}
-      className="addAppointment-modal"
-      overlayClassName="addAppointment-modal-overlay"
+      className="add-appointment-modal"
+      overlayClassName="add-appointment-modal-overlay"
     >
-      <h2>Add New Appointment</h2>
+      <div className="add-appointment-modal-header">
+        <h2>Add New Appointment</h2>
+        <i className="fas fa-times add-appointment-modal-close" onClick={onClose}></i>
+      </div>
       <form onSubmit={handleSubmit}>
         <label>
           Doctor:
@@ -61,7 +64,7 @@ function AddAppointmentModal({ userId, isOpen, onClose, onSave }) {
           Appointment Date:
           <input
             type="date"
-            name="addAppointment_date"
+            name="appointment_date"
             value={newAppointment.appointment_date}
             onChange={handleInputChange}
             required
@@ -75,8 +78,10 @@ function AddAppointmentModal({ userId, isOpen, onClose, onSave }) {
             onChange={handleInputChange}
           />
         </label>
-        <button type="submit">Save</button>
-        <button type="button" onClick={onClose}>Cancel</button>
+        <div className="add-appointment-modal-buttons">
+          <button type="submit">Save</button>
+          <button type="button" onClick={onClose}>Cancel</button>
+        </div>
       </form>
     </Modal>
   );
