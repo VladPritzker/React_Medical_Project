@@ -15,7 +15,7 @@ const AppointmentsModal = ({ userId, onClose }) => {
   const [filterDate, setFilterDate] = useState('');
   const [filterDoctor, setFilterDoctor] = useState('');
   const [filterNotes, setFilterNotes] = useState('');
-  const [filterDone, setFilterDone] = useState('all');
+  const [filterDone, setFilterDone] = useState('not_done'); // Default to 'not_done'
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -49,7 +49,6 @@ const AppointmentsModal = ({ userId, onClose }) => {
       console.error('Invalid appointment date:', newAppointment.appointment_date);
     }
   };
-  
 
   const handleCheckboxChange = async (appointmentId, done) => {
     try {
