@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './UserModal.css';
+import AppointmentsModal from '../UserModal/AppointmentsModal/AppointmentsModal'; // Import the AppointmentsModal component
 
 const UserModal = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showAppointmentsModal, setShowAppointmentsModal] = useState(false); // State to control the visibility of the appointments modal
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,7 +52,6 @@ const UserModal = () => {
 
       if (response.ok) {
         const data = await response.json();
-        // Update the photo URL in userData
         setUserData(prevData => ({ ...prevData, photo: data.file_url }));
         alert('Profile photo updated successfully');
       } else {
@@ -69,6 +70,14 @@ const UserModal = () => {
     navigate('/registration');
   };
 
+  const handleShowAppointments = () => {
+    setShowAppointmentsModal(true);
+  };
+
+  const handleCloseAppointments = () => {
+    setShowAppointmentsModal(false);
+  };
+
   if (!userData) return null;
 
   return (
@@ -81,7 +90,7 @@ const UserModal = () => {
           <div className="user-modal-body">
             <div className="profile-section">
               <h3>Profile Photo</h3>
-              <img src={`http://localhost:8001/media/${userData.photo}`} alt="Profile" className="profile-photo"/>
+              <img src={`http://localhost:8001/${userData.photo}`} alt="Profile" className="profile-photo"/>
               <input type="file" onChange={handleFileChange} />
               <button className="upload-button" onClick={handleUpload}>Upload Photo</button>
             </div>
@@ -89,11 +98,14 @@ const UserModal = () => {
               <p><strong>Email:</strong> {userData.email}</p>
             </div>
             <button className="modal-button" onClick={handleLogout}>Log Out</button>
-            <button className="modal-button">Appointment</button>
+            <button className="modal-button" onClick={handleShowAppointments}>Appointment</button>
             <button className="modal-button">User History</button>
           </div>
         </div>
       </div>
+      {showAppointmentsModal && (
+        <AppointmentsModal userId={userId} onClose={handleCloseAppointments} />
+      )}
     </div>
   );
 };
