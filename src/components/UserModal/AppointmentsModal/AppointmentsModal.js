@@ -36,8 +36,20 @@ const AppointmentsModal = ({ userId, onClose }) => {
   }, [userId]);
 
   const handleAddAppointment = (newAppointment) => {
-    setAppointments((prevAppointments) => [...prevAppointments, newAppointment]);
+    const formattedDate = new Date(newAppointment.appointment_date);
+    if (!isNaN(formattedDate)) {
+      setAppointments((prevAppointments) => [
+        ...prevAppointments,
+        {
+          ...newAppointment,
+          appointment_date: formattedDate.toISOString(), // Ensure the format matches
+        },
+      ]);
+    } else {
+      console.error('Invalid appointment date:', newAppointment.appointment_date);
+    }
   };
+  
 
   const handleCheckboxChange = async (appointmentId, done) => {
     try {
