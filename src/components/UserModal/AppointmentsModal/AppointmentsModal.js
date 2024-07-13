@@ -35,6 +35,20 @@ const AppointmentsModal = ({ userId, onClose }) => {
     fetchAppointments();
   }, [userId]);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const handleAddAppointment = (newAppointment) => {
     const formattedDate = new Date(newAppointment.appointment_date);
     if (!isNaN(formattedDate)) {
