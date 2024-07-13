@@ -40,10 +40,8 @@
   top: 20px;
   left: 20px; /* Adjusted to be on the left */
   width: 350px; /* Increased width */
-  background: #f5f5f5;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-section {

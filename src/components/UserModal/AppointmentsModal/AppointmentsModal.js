@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import './AppointmentsModal.css';
 import AddAppointmentModal from './AddAppointmentModal/AddAppointmentModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal/DeleteConfirmationModal';
 
 const AppointmentsModal = ({ userId, onClose }) => {
   const [appointments, setAppointments] = useState([]);
   const [showAddAppointmentModal, setShowAddAppointmentModal] = useState(false);
+  const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
+  const [appointmentToDelete, setAppointmentToDelete] = useState(null);
 
   // Filters
   const [filterDate, setFilterDate] = useState('');
@@ -57,6 +60,30 @@ const AppointmentsModal = ({ userId, onClose }) => {
       }
     } catch (error) {
       console.error('Error updating appointment:', error);
+    }
+  };
+
+  const handleDeleteAppointment = (appointmentId) => {
+    setAppointmentToDelete(appointmentId);
+    setShowDeleteConfirmationModal(true);
+  };
+
+  const confirmDeleteAppointment = async () => {
+    try {
+      const response = await fetch(`http://localhost:8001/appointments/${userId}/${appointmentToDelete}/`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setAppointments((prevAppointments) =>
+          prevAppointments.filter((appointment) => appointment.id !== appointmentToDelete)
+        );
+        setShowDeleteConfirmationModal(false);
+      } else {
+        console.error('Failed to delete appointment');
+      }
+    } catch (error) {
+      console.error('Error deleting appointment:', error);
     }
   };
 
@@ -137,6 +164,11 @@ const AppointmentsModal = ({ userId, onClose }) => {
                       onChange={(e) => handleCheckboxChange(appointment.id, e.target.checked)}
                     />
                   </label>
+                  <FontAwesomeIcon
+                    icon={faTrash}
+                    className="delete-appointment-icon"
+                    onClick={() => handleDeleteAppointment(appointment.id)}
+                  />
                 </div>
               </li>
             ))}
@@ -150,6 +182,12 @@ const AppointmentsModal = ({ userId, onClose }) => {
           userId={userId}
           onClose={() => setShowAddAppointmentModal(false)}
           onAdd={handleAddAppointment}
+        />
+      )}
+      {showDeleteConfirmationModal && (
+        <DeleteConfirmationModal
+          onConfirm={confirmDeleteAppointment}
+          onCancel={() => setShowDeleteConfirmationModal(false)}
         />
       )}
     </div>
