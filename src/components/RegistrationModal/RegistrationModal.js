@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for redirection
+import { useNavigate } from 'react-router-dom';
 import '../RegistrationModal/RegistrationModal.css';
 
 const RegistrationForm = () => {
@@ -9,7 +9,7 @@ const RegistrationForm = () => {
     email: '',
     password: ''
   });
-  const navigate = useNavigate(); // Create an instance of useNavigate for redirection
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -49,6 +49,7 @@ const RegistrationForm = () => {
           });
         }
       } else {
+        console.error('Error response:', result);
         alert(result.error || 'An error occurred');
       }
     } catch (error) {
