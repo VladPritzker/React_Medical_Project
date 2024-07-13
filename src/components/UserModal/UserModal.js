@@ -91,7 +91,7 @@ const UserModal = () => {
             <div className="profile-section">
               <h3>Profile Photo</h3>
               <img src={`http://localhost:8001/${userData.photo}`} alt="Profile" className="profile-photo"/>
-              <input type="file" onChange={handleFileChange} />
+              <input className='user-inpute' type="file" onChange={handleFileChange} />
               <button className="upload-button" onClick={handleUpload}>Upload Photo</button>
             </div>
             <div className="user-info">

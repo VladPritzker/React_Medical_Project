@@ -12,12 +12,13 @@
 
 .modal-content {
   position: relative;
-  background: rgba(255, 255, 255, 0.8); /* White with 80% opacity */
+  background: rgba(255, 255, 255, 0.5); /* White with 80% opacity */
   padding: 20px;
   border-radius: 8px;
   width: 1100px;
   height: 800px;
   text-align: center;
+  box-shadow: 1 1px 1px;
 
 }
 
@@ -39,7 +40,7 @@
   position: relative;
   top: 20px;
   left: 20px; /* Adjusted to be on the left */
-  width: 350px; /* Increased width */
+  width: 250px; /* Increased width */
   padding: 20px;
   border-radius: 8px;
 }
@@ -69,4 +70,8 @@
 
 .upload-button:hover, .modal-button:hover {
   background: #0056b3;
+}
+
+.user-inpute{
+  width: 235px;
 }
