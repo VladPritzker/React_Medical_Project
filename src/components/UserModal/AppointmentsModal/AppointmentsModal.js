@@ -8,6 +8,12 @@ const AppointmentsModal = ({ userId, onClose }) => {
   const [appointments, setAppointments] = useState([]);
   const [showAddAppointmentModal, setShowAddAppointmentModal] = useState(false);
 
+  // Filters
+  const [filterDate, setFilterDate] = useState('');
+  const [filterDoctor, setFilterDoctor] = useState('');
+  const [filterNotes, setFilterNotes] = useState('');
+  const [filterDone, setFilterDone] = useState('all');
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -60,6 +66,17 @@ const AppointmentsModal = ({ userId, onClose }) => {
     return dateTime.toLocaleString('en-US', options);
   };
 
+  // Filtered appointments based on the filters
+  const filteredAppointments = appointments.filter((appointment) => {
+    const matchDate = filterDate ? appointment.appointment_date.startsWith(filterDate) : true;
+    const matchDoctor = filterDoctor ? appointment.doctor.toLowerCase().includes(filterDoctor.toLowerCase()) : true;
+    const matchNotes = filterNotes ? appointment.notes.toLowerCase().includes(filterNotes.toLowerCase()) : true;
+    const matchDone =
+      filterDone === 'all' ? true : filterDone === 'done' ? appointment.done : !appointment.done;
+
+    return matchDate && matchDoctor && matchNotes && matchDone;
+  });
+
   return (
     <div className="appointments-modal-overlay">
       <div className="appointments-modal-content">
@@ -75,21 +92,52 @@ const AppointmentsModal = ({ userId, onClose }) => {
         >
           <FontAwesomeIcon icon={faPlus} /> Add Appointment
         </button>
-        {appointments.length > 0 ? (
-          <ul>
-            {appointments.map((appointment, index) => (
+
+        <div className="filters">
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => setFilterDate(e.target.value)}
+            placeholder="Filter by Date"
+          />
+          <input
+            type="text"
+            value={filterDoctor}
+            onChange={(e) => setFilterDoctor(e.target.value)}
+            placeholder="Filter by Doctor"
+          />
+          <input
+            type="text"
+            value={filterNotes}
+            onChange={(e) => setFilterNotes(e.target.value)}
+            placeholder="Filter by Notes"
+          />
+          <select value={filterDone} onChange={(e) => setFilterDone(e.target.value)}>
+            <option value="all">All</option>
+            <option value="done">Done</option>
+            <option value="not_done">Not Done</option>
+          </select>
+        </div>
+
+        {filteredAppointments.length > 0 ? (
+          <ul className="appointments-list">
+            {filteredAppointments.map((appointment, index) => (
               <li key={appointment.id} className="appointments-list-item">
-                <p><strong>Date & Time:</strong> {formatDateTime(appointment.appointment_date)}</p>
-                <p><strong>Doctor:</strong> {appointment.doctor}</p>
-                <p><strong>Notes:</strong> {appointment.notes}</p>
-                <label>
-                  Done:
-                  <input
-                    type="checkbox"
-                    checked={appointment.done}
-                    onChange={(e) => handleCheckboxChange(appointment.id, e.target.checked)}
-                  />
-                </label>
+                <div className="appointment-details">
+                  <p><strong>Date & Time:</strong> {formatDateTime(appointment.appointment_date)}</p>
+                  <p className='right1'><strong>Doctor:</strong> {appointment.doctor}</p>
+                  <p className='right2'><strong>Notes:</strong> {appointment.notes}</p>
+                </div>
+                <div className="appointment-actions">
+                  <label>
+                    Done:
+                    <input
+                      type="checkbox"
+                      checked={appointment.done}
+                      onChange={(e) => handleCheckboxChange(appointment.id, e.target.checked)}
+                    />
+                  </label>
+                </div>
               </li>
             ))}
           </ul>
