@@ -9,6 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1200; /* Set a lower z-index */
   }
   
   .delete-confirmation-modal-content {

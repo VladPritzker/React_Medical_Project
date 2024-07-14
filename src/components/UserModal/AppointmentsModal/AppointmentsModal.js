@@ -1,15 +1,58 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import styled from 'styled-components';
 import './AppointmentsModal.css';
 import AddAppointmentModal from './AddAppointmentModal/AddAppointmentModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal/DeleteConfirmationModal';
+import AppointmentInfoModal from './AppointmentInfoModal/AppointmentInfoModal';
+
+const StyledCalendar = styled(Calendar)`
+  border: none;
+  width: 100%;
+  .react-calendar__tile {
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .react-calendar__tile:enabled:hover,
+  .react-calendar__tile:enabled:focus {
+    background-color: #e0e0e0;
+  }
+  .react-calendar__tile--now {
+    background: #4caf50;
+    color: white;
+  }
+  .react-calendar__tile--active {
+    background: #3f51b5;
+    color: white;
+  }
+  .react-calendar__tile--active:enabled:hover,
+  .react-calendar__tile--active:enabled:focus {
+    background: #303f9f;
+    color: white;
+  }
+  .react-calendar__tile--hasActive {
+    background: #f44336;
+    color: white;
+  }
+  .react-calendar__tile.react-calendar__month-view__days__day {
+    background-color: white;
+    color: black;
+  }
+  .appointment-icon {
+    color: #0060b9;
+    width: 20px;
+  }
+`;
 
 const AppointmentsModal = ({ userId, onClose }) => {
   const [appointments, setAppointments] = useState([]);
   const [showAddAppointmentModal, setShowAddAppointmentModal] = useState(false);
   const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false);
   const [appointmentToDelete, setAppointmentToDelete] = useState(null);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
 
   // Filters
   const [filterDate, setFilterDate] = useState('');
@@ -129,6 +172,23 @@ const AppointmentsModal = ({ userId, onClose }) => {
     return matchDate && matchDoctor && matchNotes && matchDone;
   });
 
+  const tileContent = ({ date, view }) => {
+    if (view === 'month') {
+      const dateString = date.toISOString().split('T')[0];
+      const appointment = appointments.find(app => app.appointment_date.startsWith(dateString));
+      return appointment ? <FontAwesomeIcon icon={faPlus} className="appointment-icon" /> : null;
+    }
+    return null;
+  };
+
+  const onDateClick = (date) => {
+    const dateString = date.toISOString().split('T')[0];
+    const appointment = appointments.find(app => app.appointment_date.startsWith(dateString));
+    if (appointment) {
+      setSelectedAppointment(appointment);
+    }
+  };
+
   return (
     <div className="appointments-modal-overlay">
       <div className="appointments-modal-content">
@@ -201,6 +261,11 @@ const AppointmentsModal = ({ userId, onClose }) => {
         ) : (
           <p>No appointments found.</p>
         )}
+
+        <StyledCalendar
+          tileContent={tileContent}
+          onClickDay={onDateClick}
+        />
       </div>
       {showAddAppointmentModal && (
         <AddAppointmentModal
@@ -213,6 +278,14 @@ const AppointmentsModal = ({ userId, onClose }) => {
         <DeleteConfirmationModal
           onConfirm={confirmDeleteAppointment}
           onCancel={() => setShowDeleteConfirmationModal(false)}
+        />
+      )}
+      {selectedAppointment && (
+        <AppointmentInfoModal
+          appointment={selectedAppointment}
+          onClose={() => setSelectedAppointment(false)}
+          onDeleteClick={() => handleDeleteAppointment(selectedAppointment.id)}
+          onCheckboxChange={handleCheckboxChange}
         />
       )}
     </div>
