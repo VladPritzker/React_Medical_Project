@@ -11,7 +11,9 @@ import AppointmentInfoModal from './AppointmentInfoModal/AppointmentInfoModal';
 
 const StyledCalendar = styled(Calendar)`
   border: none;
-  width: 100%;
+  width: 600px;
+  .react-calendar {
+  width: 600px}
   .react-calendar__tile {
     border-radius: 8px;
     transition: background-color 0.3s, color 0.3s;
@@ -45,6 +47,8 @@ const StyledCalendar = styled(Calendar)`
     color: #0060b9;
     width: 20px;
   }
+
+  
 `;
 
 const AppointmentsModal = ({ userId, onClose }) => {
@@ -60,21 +64,21 @@ const AppointmentsModal = ({ userId, onClose }) => {
   const [filterNotes, setFilterNotes] = useState('');
   const [filterDone, setFilterDone] = useState('not_done'); // Default to 'not_done'
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await fetch(`http://localhost:8001/appointments/${userId}/`);
-        if (response.ok) {
-          const data = await response.json();
-          setAppointments(data);
-        } else {
-          console.error('Failed to fetch appointments');
-        }
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
+  const fetchAppointments = async () => {
+    try {
+      const response = await fetch(`http://localhost:8001/appointments/${userId}/`);
+      if (response.ok) {
+        const data = await response.json();
+        setAppointments(data);
+      } else {
+        console.error('Failed to fetch appointments');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchAppointments();
   }, [userId]);
 
@@ -91,6 +95,10 @@ const AppointmentsModal = ({ userId, onClose }) => {
       document.removeEventListener('keydown', handleKeyDown);
     };
   }, [onClose]);
+
+  useEffect(() => {
+    fetchAppointments();
+  }, [appointments]);
 
   const handleAddAppointment = (newAppointment) => {
     const formattedDate = new Date(newAppointment.appointment_date);

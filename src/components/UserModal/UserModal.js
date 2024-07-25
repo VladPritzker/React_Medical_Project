@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './UserModal.css';
 import AppointmentsModal from '../UserModal/AppointmentsModal/AppointmentsModal'; // Import the AppointmentsModal component
+import HealthHistoryModal from './HealthHistoryModal/HealthHistoryModal';
+
 
 const UserModal = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [showAppointmentsModal, setShowAppointmentsModal] = useState(false); // State to control the visibility of the appointments modal
+  const [showHealthHistoryModal, setShowHealthHistoryModal] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,6 +89,7 @@ const UserModal = () => {
       <div className="modal-content">
         <div className="user-card">
           <div className="user-modal-header">
+            <button className="modal-button" onClick={handleLogout}>Log Out</button>
             <h2>{userData.username}'s Profile</h2>
           </div>
           <div className="user-modal-body">
@@ -97,15 +102,22 @@ const UserModal = () => {
             <div className="user-info">
               <p><strong>Email:</strong> {userData.email}</p>
             </div>
-            <button className="modal-button" onClick={handleLogout}>Log Out</button>
             <button className="modal-button" onClick={handleShowAppointments}>Appointment</button>
-            <button className="modal-button">User History</button>
+            <button onClick={() => setShowHealthHistoryModal(true)}>
+                View Health History
+            </button>
           </div>
         </div>
       </div>
       {showAppointmentsModal && (
         <AppointmentsModal userId={userId} onClose={handleCloseAppointments} />
       )}
+      {showHealthHistoryModal && (
+                <HealthHistoryModal
+                    userId={userId}
+                    onClose={() => setShowHealthHistoryModal(false)}
+                />
+            )}
     </div>
   );
 };
