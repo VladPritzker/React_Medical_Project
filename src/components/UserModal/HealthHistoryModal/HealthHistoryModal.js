@@ -3,11 +3,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import faTrash icon
 import './HealthHistoryModal.css';
 import AddHealthHistoryModal from './AddHealthHistoryModal/AddHealthHistoryModal';
+import DeleteConfirmationModal from './DeleteConfirmationModal/DeleteConfirmationModal';
 
 const HealthHistoryModal = ({ userId, onClose }) => {
     const [healthHistories, setHealthHistories] = useState([]); // State to store health histories
     const [showHealthHistoryModal, setShowHealthHistoryModal] = useState(false); // State to control the visibility of the AddHealthHistoryModal
+    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState(false); // State to control the visibility of the DeleteConfirmationModal
+    const [recordToDelete, setRecordToDelete] = useState(null); // State to store the record to be deleted
 
+    // Function to fetch health histories for the user
     const fetchHealthHistories = async () => {
         try {
             const response = await fetch(`http://localhost:8001/health_histories/${userId}/`);
@@ -31,30 +35,34 @@ const HealthHistoryModal = ({ userId, onClose }) => {
         fetchHealthHistories();
     }, [healthHistories]);
 
-
     const handleAddHealthHistory = (newHealthHistory) => {
         console.log("New Health History added:", newHealthHistory); // Log the new health history
-        // Update health histories state with new health history
-        setHealthHistories((prevHistories) => [...prevHistories, newHealthHistory]);
+        setHealthHistories((prevHistories) => [...prevHistories, newHealthHistory]); // Update healthHistories state
     };
 
-    const handleDeleteHealthHistory = async (id) => {
-        try {
-            const response = await fetch(`http://localhost:8001/health_histories/${userId}/${id}/`, {
-                method: 'DELETE',
-            });
-            if (response.ok) {
-                setHealthHistories((prevHistories) => prevHistories.filter(history => history.id !== id)); // Remove deleted history from state
-            } else {
-                alert('Failed to delete health history');
+    const handleDeleteHealthHistory = async () => {
+        if (recordToDelete) {
+            try {
+                const response = await fetch(`http://localhost:8001/health_histories/${userId}/${recordToDelete.id}/`, {
+                    method: 'DELETE',
+                });
+                if (response.ok) {
+                    setHealthHistories((prevHistories) => prevHistories.filter(history => history.id !== recordToDelete.id)); // Remove deleted history from state
+                    setShowDeleteConfirmationModal(false); // Close the delete confirmation modal
+                } else {
+                    alert('Failed to delete health history');
+                }
+            } catch (error) {
+                console.error('Error deleting health history:', error);
+                alert('Error deleting health history');
             }
-        } catch (error) {
-            console.error('Error deleting health history:', error);
-            alert('Error deleting health history');
         }
     };
 
-
+    const openDeleteConfirmationModal = (history) => {
+        setRecordToDelete(history); // Set the record to be deleted
+        setShowDeleteConfirmationModal(true); // Show the delete confirmation modal
+    };
 
     return (
         <div className="health-history-modal-overlay">
@@ -81,7 +89,7 @@ const HealthHistoryModal = ({ userId, onClose }) => {
                                 <p><strong>Date:</strong> {history.date}</p>
                                 <button
                                     className="delete-health-history-button"
-                                    onClick={() => handleDeleteHealthHistory(history.id)} // Call handleDeleteHealthHistory on button click
+                                    onClick={() => openDeleteConfirmationModal(history)} // Call openDeleteConfirmationModal on button click
                                 >
                                     <FontAwesomeIcon icon={faTrash} /> Delete
                                 </button>
@@ -97,6 +105,12 @@ const HealthHistoryModal = ({ userId, onClose }) => {
                     userId={userId}
                     onClose={() => setShowHealthHistoryModal(false)} // Hide AddHealthHistoryModal on close
                     onAdd={handleAddHealthHistory} // Pass handleAddHealthHistory to AddHealthHistoryModal
+                />
+            )}
+            {showDeleteConfirmationModal && (
+                <DeleteConfirmationModal
+                    onClose={() => setShowDeleteConfirmationModal(false)} // Close the DeleteConfirmationModal on close
+                    onConfirm={handleDeleteHealthHistory} // Call handleDeleteHealthHistory on confirm
                 />
             )}
         </div>
