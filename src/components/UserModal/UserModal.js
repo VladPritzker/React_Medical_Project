@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './UserModal.css';
-import AppointmentsModal from '../UserModal/AppointmentsModal/AppointmentsModal'; // Import the AppointmentsModal component
+import PersonalInfoModal from './PersonalInfoModal/PersonalInfoModal';
+import AppointmentsModal from './AppointmentsModal/AppointmentsModal'; // Import the AppointmentsModal component
 import HealthHistoryModal from './HealthHistoryModal/HealthHistoryModal';
 
 
@@ -9,6 +10,7 @@ const UserModal = () => {
   const { userId } = useParams();
   const [userData, setUserData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showPersonalInfoModal, setShowPersonalInfoModal] = useState(false)
   const [showAppointmentsModal, setShowAppointmentsModal] = useState(false); // State to control the visibility of the appointments modal
   const [showHealthHistoryModal, setShowHealthHistoryModal] = useState(false);
 
@@ -74,13 +76,7 @@ const UserModal = () => {
     navigate('/registration');
   };
 
-  const handleShowAppointments = () => {
-    setShowAppointmentsModal(true);
-  };
-
-  const handleCloseAppointments = () => {
-    setShowAppointmentsModal(false);
-  };
+  
 
   if (!userData) return null;
 
@@ -101,8 +97,9 @@ const UserModal = () => {
             </div>
             <div className="user-info">
               <p><strong>Email:</strong> {userData.email}</p>
-            </div>
-            <button className="modal-button" onClick={handleShowAppointments}>Appointment</button>
+            </div>            
+            <button className="modal-button" onClick={()=> setShowPersonalInfoModal(true)}>Personal Information</button>
+            <button className="modal-button" onClick={()=> setShowAppointmentsModal(true)}>Appointment</button>
             <button onClick={() => setShowHealthHistoryModal(true)}>
                 View Health History
             </button>
@@ -110,7 +107,7 @@ const UserModal = () => {
         </div>
       </div>
       {showAppointmentsModal && (
-        <AppointmentsModal userId={userId} onClose={handleCloseAppointments} />
+        <AppointmentsModal userId={userId} onClose={() => setShowAppointmentsModal(false)} />
       )}
       {showHealthHistoryModal && (
                 <HealthHistoryModal
@@ -118,6 +115,14 @@ const UserModal = () => {
                     onClose={() => setShowHealthHistoryModal(false)}
                 />
             )}
+      {showPersonalInfoModal && (
+        <PersonalInfoModal 
+        userId={userId}
+        onClose={()=> setShowPersonalInfoModal(false)}
+        />
+      )
+
+      }            
     </div>
   );
 };

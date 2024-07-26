@@ -64,6 +64,21 @@ const HealthHistoryModal = ({ userId, onClose }) => {
         setShowDeleteConfirmationModal(true); // Show the delete confirmation modal
     };
 
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === "Escape") {
+                onClose();
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [onClose]);
+
+
     return (
         <div className="health-history-modal-overlay">
             <div className="health-history-modal-content">
