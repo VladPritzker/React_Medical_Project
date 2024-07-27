@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes} from '@fortawesome/free-solid-svg-icons'; // Import faTrash icon
 import './PersonalInfoModal.css';
 
 const PersonalInfoModal = ({ userId, onClose }) => {
@@ -78,6 +80,11 @@ const PersonalInfoModal = ({ userId, onClose }) => {
     return (
         <div className="personal-info-modal-overlay">
             <div className="personal-info-modal-content">
+            <FontAwesomeIcon
+                    icon={faTimes}
+                    className="health-history-close-icon"
+                    onClick={onClose}
+                />
                 <h2>Personal Information</h2>
                 <form onSubmit={handleSubmit}>
                     <input
@@ -155,8 +162,7 @@ const PersonalInfoModal = ({ userId, onClose }) => {
                         required
                     />
                     <button type="submit">Save</button>
-                </form>
-                <button onClick={onClose}>Close</button>
+                </form>                
             </div>
         </div>
     );

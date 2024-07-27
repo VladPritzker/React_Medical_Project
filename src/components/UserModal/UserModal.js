@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './UserModal.css';
 import PersonalInfoModal from './PersonalInfoModal/PersonalInfoModal';
 import AppointmentsModal from './AppointmentsModal/AppointmentsModal'; // Import the AppointmentsModal component
-import HealthHistoryModal from './HealthHistoryModal/HealthHistoryModal';
+import HealthHistoryModal from './TreatmentHistoryModal/TreatmentHistoryModal';
+import InsuranceInformationModal from './InsuranceInformationModal/InsuranceInformationModal'
+import MedicalHistoryModal from './MedicalHistoryModal/MedicalHistoryModal';
 
 
 const UserModal = () => {
@@ -13,6 +15,9 @@ const UserModal = () => {
   const [showPersonalInfoModal, setShowPersonalInfoModal] = useState(false)
   const [showAppointmentsModal, setShowAppointmentsModal] = useState(false); // State to control the visibility of the appointments modal
   const [showHealthHistoryModal, setShowHealthHistoryModal] = useState(false);
+  const [showMedicalHistoryModal, setShowMedicalHistoryModal] = useState(false);
+
+  const [showInsuranceInformationModal, setShowInsuranceInformationModal]= useState(false)
 
   const navigate = useNavigate();
 
@@ -101,8 +106,13 @@ const UserModal = () => {
             <button className="modal-button" onClick={()=> setShowPersonalInfoModal(true)}>Personal Information</button>
             <button className="modal-button" onClick={()=> setShowAppointmentsModal(true)}>Appointment</button>
             <button onClick={() => setShowHealthHistoryModal(true)}>
-                View Health History
+                Treatment History
             </button>
+            <button onClick={() => setShowInsuranceInformationModal(true)}>
+                Insurence Information Modal
+            </button>
+            <button onClick={() => setShowMedicalHistoryModal(true)}>Add/View Medical History</button>
+
           </div>
         </div>
       </div>
@@ -115,14 +125,22 @@ const UserModal = () => {
                     onClose={() => setShowHealthHistoryModal(false)}
                 />
             )}
+            {showMedicalHistoryModal && (
+                <MedicalHistoryModal userId={47} onClose={() => setShowMedicalHistoryModal(false)} />
+            )}
       {showPersonalInfoModal && (
         <PersonalInfoModal 
         userId={userId}
         onClose={()=> setShowPersonalInfoModal(false)}
         />
-      )
-
-      }            
+      )}            
+      
+      {showInsuranceInformationModal && (
+        <InsuranceInformationModal
+        userId={userId}
+        onClose={()=> setShowInsuranceInformationModal(false)}
+        />
+      )}            
     </div>
   );
 };

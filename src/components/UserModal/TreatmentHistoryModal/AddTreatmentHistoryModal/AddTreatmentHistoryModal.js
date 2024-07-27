@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
-import './AddHealthHistoryModal.css';
+import './AddTreatmentHistoryModal.css';
 
 const AddHealthHistoryModal = ({ userId, onClose, onAdd }) => {
     const [date, setDate] = useState(''); // State for date input
@@ -24,7 +24,7 @@ const AddHealthHistoryModal = ({ userId, onClose, onAdd }) => {
         };
 
         try {
-            const response = await fetch(`http://localhost:8001/health_histories/${userId}/`, {
+            const response = await fetch(`http://localhost:8001/treatment_histories/${userId}/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

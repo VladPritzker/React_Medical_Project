@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons'; // Import faTrash icon
-import './HealthHistoryModal.css';
-import AddHealthHistoryModal from './AddHealthHistoryModal/AddHealthHistoryModal';
+import './TreatmentHistoryModal.css';
+import AddHealthHistoryModal from './AddTreatmentHistoryModal/AddTreatmentHistoryModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal/DeleteConfirmationModal';
 
 const HealthHistoryModal = ({ userId, onClose }) => {
@@ -14,7 +14,7 @@ const HealthHistoryModal = ({ userId, onClose }) => {
     // Function to fetch health histories for the user
     const fetchHealthHistories = async () => {
         try {
-            const response = await fetch(`http://localhost:8001/health_histories/${userId}/`);
+            const response = await fetch(`http://localhost:8001/treatment_histories/${userId}/`);
             if (response.ok) {
                 const data = await response.json();
                 setHealthHistories(data); // Update state with fetched health histories
@@ -43,7 +43,7 @@ const HealthHistoryModal = ({ userId, onClose }) => {
     const handleDeleteHealthHistory = async () => {
         if (recordToDelete) {
             try {
-                const response = await fetch(`http://localhost:8001/health_histories/${userId}/${recordToDelete.id}/`, {
+                const response = await fetch(`http://localhost:8001/treatment_histories/${userId}/${recordToDelete.id}/`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {
