@@ -65,7 +65,20 @@ const InsuranceInformationModal = ({ userId, onClose }) => {
             alert('Error updating insurance info');
         }
     };
-    
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.keyCode === 27) {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleEsc);
+
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [onClose]);
+
     // Render the modal for insurance information
     return (
         <div className="insurance-info-modal-overlay">
