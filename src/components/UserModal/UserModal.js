@@ -109,9 +109,9 @@ const UserModal = () => {
                 Treatment History
             </button>
             <button onClick={() => setShowInsuranceInformationModal(true)}>
-                Insurence Information Modal
+                Insurence Information
             </button>
-            <button onClick={() => setShowMedicalHistoryModal(true)}>Add/View Medical History</button>
+            <button onClick={() => setShowMedicalHistoryModal(true)}>Medical History</button>
 
           </div>
         </div>

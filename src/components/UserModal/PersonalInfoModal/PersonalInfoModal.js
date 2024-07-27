@@ -15,6 +15,19 @@ const PersonalInfoModal = ({ userId, onClose }) => {
         emergency_contact_relationship: '',
         emergency_contact_phone: ''
     });
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.keyCode === 27) {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleEsc);
+
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [onClose]);
 
     useEffect(() => {
         const fetchUserInfo = async () => {

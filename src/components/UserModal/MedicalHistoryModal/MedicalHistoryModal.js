@@ -70,6 +70,21 @@ const MedicalHistoryModal = ({ userId, onClose }) => {
             console.error('Error adding medical history:', error);
         }
     };
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.keyCode === 27) {
+                onClose();
+            }
+        };
+
+        window.addEventListener('keydown', handleEsc);
+
+        return () => {
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [onClose]);
+
+
 
     const handleDelete = async (id) => {
         try {
